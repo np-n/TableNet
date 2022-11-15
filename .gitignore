@@ -5,3 +5,5 @@ dataset/
 .vscode
 
 *.jpg
+
+.idea/
