@@ -22,9 +22,18 @@ def sameTable(ymin_1, ymin_2, ymax_1, ymax_2):
 
 
 if __name__ == "__main__":
+    # Download the dataset from the https://drive.google.com/drive/folders/1QZiv5RKe3xlOBdTzuTVuYRxixemVIODp
+    # and place to dataset folder
     directory = './dataset/Marmot_data/'
-    final_col_directory = './dataset/column_mask/'
-    final_table_directory = './dataset/table_mask/'
+
+    # create the directory to add the final_col and final_table
+    final_col_directory = './dataset/column_mask'
+    final_table_directory = './dataset/table_mask'
+
+    if not os.path.isdir(final_col_directory):
+        os.mkdir(final_col_directory)
+    if not os.path.isdir(final_table_directory):
+        os.mkdir(final_table_directory)
 
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
@@ -33,7 +42,7 @@ if __name__ == "__main__":
             filename = filename[:-4]
 
             # Parse xml file
-            tree = ET.parse('./dataset/Marmot/' + filename + '.xml')
+            tree = ET.parse('./dataset/Marmot_data/' + filename + '.xml')
             root = tree.getroot()
             size = root.find('size')
 
@@ -90,10 +99,10 @@ if __name__ == "__main__":
             table_mask[table_ymin:table_ymax, table_xmin:table_xmax] = 255
 
             im = Image.fromarray(col_mask.astype(np.uint8),'L')
-            im.save(final_col_directory + filename + ".jpeg")
+            im.save(os.path.join(final_col_directory, filename + ".jpeg"))
 
             im = Image.fromarray(table_mask.astype(np.uint8),'L')
-            im.save(final_table_directory + filename + ".jpeg")
+            im.save(os.path.join(final_table_directory, filename + ".jpeg"))
 
             
 
